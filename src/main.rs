@@ -92,8 +92,9 @@ async fn main() -> std::io::Result<()> {
 
     let db_location = get_db_conn_string();
     let db = get_db_instance(db_location.clone());
-    let data = web::Data::new(Mutex::new(db));
+
     HttpServer::new(move || {
+        let data = web::Data::new(Mutex::new(db.clone()));
         App::new()
             .data(data.clone())
             .service(web::resource("search")
